@@ -96,23 +96,23 @@ export default function App() {
 
           {pagination && (
             <div className="pagination">
-              <button onClick={() => setPage(1)} disabled={page === 1}>
+              <button onClick={() => setPage(1)} disabled={page === 1} title="Première page">
                 «
               </button>
-              <button onClick={() => setPage(p => Math.max(1, p - 10))} disabled={page <= 10}>
-                -10
+              <button onClick={() => setPage(p => Math.max(1, p - 10))} disabled={page <= 10} title="-10 pages">
+                −10
               </button>
               <button onClick={() => setPage(p => p - 1)} disabled={page === 1}>
-                Précédent
+                ‹
               </button>
               <span className="page-info">{page} / {pagination.totalPages}</span>
               <button onClick={() => setPage(p => p + 1)} disabled={!pagination.hasMore}>
-                Suivant
+                ›
               </button>
-              <button onClick={() => setPage(p => Math.min(pagination.totalPages, p + 10))} disabled={page + 10 > pagination.totalPages}>
+              <button onClick={() => setPage(p => Math.min(pagination.totalPages, p + 10))} disabled={page + 10 > pagination.totalPages} title="+10 pages">
                 +10
               </button>
-              <button onClick={() => setPage(pagination.totalPages)} disabled={page === pagination.totalPages}>
+              <button onClick={() => setPage(pagination.totalPages)} disabled={page === pagination.totalPages} title="Dernière page">
                 »
               </button>
             </div>
