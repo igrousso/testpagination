@@ -7,6 +7,7 @@ export default function App() {
   const [pagination, setPagination] = useState(null);
   const [loading,    setLoading]    = useState(false);
   const [error,      setError]      = useState(null);
+  const [selected,   setSelected]   = useState(null);
 
   const [page,     setPage]     = useState(1);
   const [limit]                 = useState(10);
@@ -75,34 +76,32 @@ export default function App() {
           {products.length === 0 ? (
             <p className="empty">Aucun produit trouvé.</p>
           ) : (
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Catégorie</th>
-                  <th>Prix</th>
-                  <th>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product._id}>
-                    <td>{product.name}</td>
-                    <td>
-                      <span className={`badge badge-${product.category}`}>
-                        {product.category}
-                      </span>
-                    </td>
-                    <td className="price">{product.price} €</td>
-                    <td className="stock">{product.stock}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <ul className="product-list">
+              {products.map((product) => (
+                <li key={product._id} className="product-row" onClick={() => setSelected(product)}>
+                  <div className="product-left">
+                    <span className={`badge badge-${product.category}`}>
+                      {product.category}
+                    </span>
+                    <span className="product-name">{product.name}</span>
+                  </div>
+                  <div className="product-right">
+                    <span className="product-stock">{product.stock} en stock</span>
+                    <span className="product-price">{product.price} €</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
 
           {pagination && (
             <div className="pagination">
+              <button onClick={() => setPage(1)} disabled={page === 1}>
+                «
+              </button>
+              <button onClick={() => setPage(p => Math.max(1, p - 10))} disabled={page <= 10}>
+                -10
+              </button>
               <button onClick={() => setPage(p => p - 1)} disabled={page === 1}>
                 Précédent
               </button>
@@ -110,9 +109,30 @@ export default function App() {
               <button onClick={() => setPage(p => p + 1)} disabled={!pagination.hasMore}>
                 Suivant
               </button>
+              <button onClick={() => setPage(p => Math.min(pagination.totalPages, p + 10))} disabled={page + 10 > pagination.totalPages}>
+                +10
+              </button>
+              <button onClick={() => setPage(pagination.totalPages)} disabled={page === pagination.totalPages}>
+                »
+              </button>
             </div>
           )}
         </>
+      )}
+
+      {selected && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelected(null)}>✕</button>
+            <span className={`badge badge-${selected.category}`}>{selected.category}</span>
+            <h2 className="modal-name">{selected.name}</h2>
+            <p className="modal-description">{selected.description}</p>
+            <div className="modal-footer">
+              <span className="modal-stock">{selected.stock} en stock</span>
+              <span className="modal-price">{selected.price} €</span>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
