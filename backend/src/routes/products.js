@@ -17,6 +17,12 @@ router.get("/", async (req, res) => {
     if (req.query.category) {
       filter.category = req.query.category;
     }
+
+    const min = parseFloat(req.query.minPrice);
+    const max = parseFloat(req.query.maxPrice);
+    if (Number.isFinite(min)) filter.price = { ...filter.price, $gte: min };
+    if (Number.isFinite(max)) filter.price = { ...filter.price, $lte: max };
+
     const ALLOWED = ["price", "name", "createdAt"];
     const sortBy    = ALLOWED.includes(req.query.sortBy) ? req.query.sortBy : "createdAt";
     const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;

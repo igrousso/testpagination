@@ -29,7 +29,7 @@ h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; }
   flex-shrink: 0;
 }
 
-.filters { display: flex; gap: .75rem; flex-wrap: wrap; }
+.filters { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
 
 select {
   padding: .4rem .75rem;
@@ -45,6 +45,31 @@ select {
 
 select:hover { border-color: #c5bfb8; }
 
+input[type="number"] {
+  padding: .4rem .75rem;
+  border: 1px solid #e2ddd8;
+  border-radius: 8px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  width: 90px;
+  transition: border-color .15s;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]:hover { border-color: #c5bfb8; }
+input[type="number"]:focus { outline: none; border-color: #2563eb; }
+
 /* ── Liste ── */
 
 .product-list {
@@ -52,7 +77,6 @@ select:hover { border-color: #c5bfb8; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: .4rem;
 }
 
 .product-row {

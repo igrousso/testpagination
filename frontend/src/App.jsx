@@ -14,6 +14,8 @@ export default function App() {
   const [category, setCategory] = useState("");
   const [sort,     setSort]     = useState("createdAt");
   const [order,    setOrder]    = useState("desc");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,6 +29,8 @@ export default function App() {
           sortOrder: order,
         });
         if (category) params.set("category", category);
+        if (minPrice) params.set("minPrice", minPrice);
+        if (maxPrice) params.set("maxPrice", maxPrice);
 
         const res = await fetch(`${API_URL}?${params}`);
         if (!res.ok) throw new Error("Réponse serveur invalide");
@@ -42,7 +46,7 @@ export default function App() {
     };
 
     fetchProducts();
-  }, [page, limit, category, sort, order]);
+  }, [page, limit, category, sort, order, minPrice, maxPrice]);
 
   return (
     <div className="app">
@@ -65,6 +69,20 @@ export default function App() {
             <option value="asc">Croissant</option>
             <option value="desc">Décroissant</option>
           </select>
+          <input
+            type="number"
+            placeholder="Prix min"
+            value={minPrice}
+            min="0"
+            onChange={(e) => { setMinPrice(e.target.value); setPage(1); }}
+          />
+          <input
+            type="number"
+            placeholder="Prix max"
+            value={maxPrice}
+            min="0"
+            onChange={(e) => { setMaxPrice(e.target.value); setPage(1); }}
+          />
         </div>
       </div>
 
